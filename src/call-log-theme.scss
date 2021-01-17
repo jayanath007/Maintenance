@@ -1,0 +1,61 @@
+@import url('https://fonts.googleapis.com/css?family=Lato:400,700&display=swap');
+@import 'call-log-colors.scss';
+@import '~@angular/material/theming';
+@include mat-core();
+$custom-typography: mat-typography-config($font-family: '"Lato", sans-serif;');
+@include mat-core($custom-typography);
+
+// Creates a map of hues to colors for a theme. This is used to define a theme palette in terms
+// of the Material Design hues.
+// @param $color-map
+// @param $primary
+// @param $lighter
+@function dps-mat-palette($base-palette, $default: 500, $text: $default) {
+  $result: map_merge($base-palette, (default: map-get($base-palette, $default),
+      ));
+
+
+  @return $result;
+}
+
+$dps-blue-grey: (50: #eceff1,
+  100: #cfd8dc,
+  200: #b0bec5,
+  300:$dps-mat-blue-1,
+  400: #78909c,
+  500: #607d8b,
+  600: #546e7a,
+  700: #455a64,
+  800:$dps-mat-blue-2,
+  900: #263238,
+  A100: #cfd8dc,
+  A200: #b0bec5,
+  A400: #78909c,
+  A700: #455a64,
+  contrast: (50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $dark-primary-text,
+    400: $light-primary-text,
+    500: $light-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+    A100: $dark-primary-text,
+    A200: $dark-primary-text,
+    A400: $light-primary-text,
+    A700: $light-primary-text,
+  ));
+
+
+/* ======== Angular material custom themes ======== */
+
+// $call-login-primary: dps-mat-palette($dps-mat-blue, dull-500);
+// $call-login-accent: dps-mat-palette($dps-mat-blue, dull-50);
+// $call-login-warn: mat-palette($mat-orange, 500);
+$call-login-primary: mat-palette($dps-blue-grey, 800);
+$call-login-accent: mat-palette($dps-blue-grey, 300);
+$call-login-warn: mat-palette($mat-orange, 500);
+$call-login-theme: mat-light-theme($call-login-primary, $call-login-accent, $call-login-warn);
+@include angular-material-theme($call-login-theme);

@@ -1,0 +1,15 @@
+@import '~src/call-log-colors.scss';
+
+mat-card.mat-datepicker-content {
+  padding: 0px;
+
+  mat-calendar {
+    width: 300px;
+
+    ::ng-deep {
+      .mat-calendar-body-selected {
+        color: $dps-mat-white;
+      }
+    }
+  }
+}

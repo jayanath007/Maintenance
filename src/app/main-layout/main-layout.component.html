@@ -1,0 +1,73 @@
+<mat-drawer-container class="dps-main-layout" (backdropClick)="onToggleSideNav()">
+  <mat-drawer opened [mode]="openMode" disableClose>
+    <button mat-icon-button class="dps-small-menu-btn" [@animateText]="linkText ? 'show' : 'hide'"
+      (click)="onToggleSideNav()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <div class="dps-main-menu" fxLayout="column" [ngClass]="{'dps-small-menu': isSmallSideNav}"
+      [@onSideNavChange]="isSmallSideNav ? 'close' : 'open'">
+      <mat-list color="accent" class="dps-user-profile" dense *dpsLet="selectedDomain$ | async as selectedDomain">
+        <mat-list-item [title]="(authUser$|async)?.emailAddress">
+          <!-- <img matListAvatar src="favicon.ico"> -->
+          <mat-icon matListIcon class="user-init"><span>{{(authUser$|async)?.userName|nameInitials}}</span>
+          </mat-icon>
+          <label class="dps-welcome-tag" matLine [@animateText]="linkText ? 'hide' : 'show'">Welcome</label>
+          <label class="dps-welcome-name" matLine
+            [@animateText]="linkText ? 'hide' : 'show'">{{(authUser$|async)?.userName}}</label>
+          <button mat-icon-button [@animateText]="linkText ? 'hide' : 'show'" (click)="onToggleSideNav()">
+            <mat-icon>menu</mat-icon>
+          </button>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item mat-button *ngIf="!(authUser$|async)?.isUser" [matMenuTriggerFor]="domainMenu"
+          (menuOpened)="onDomainsSearchKeydown(domainsSearch)">
+          <label matLine [@animateText]="linkText ? 'hide' : 'show'">{{selectedDomain$|async}}</label>
+          <button mat-icon-button>
+            <mat-icon>keyboard_arrow_down</mat-icon>
+          </button>
+          <mat-menu #domainMenu="matMenu" xPosition="before" class="dps-domain-list-menue">
+            <mat-form-field (click)="onDomainsSearchClick($event)" floatLabel="never">
+              <input matInput #domainsSearch (keydown)="onDomainsSearchKeydown(domainsSearch,$event)"
+                (keyup)="onDomainsSearchClick($event)" placeholder="Search Domain">
+              <button mat-icon-button matSuffix (click)="domainsSearch.value=''">
+                <mat-icon>close</mat-icon>
+              </button>
+            </mat-form-field>
+            <div class="dps-domains-list" *dpsLet="domains$ | async as domains">
+              <button mat-menu-item disabled></button>
+              <button mat-menu-item *ngFor="let domain of filterDomains(domains,domainsSearch.value)"
+                (click)="onDomainChange(domain,selectedDomain)">{{domain}}</button>
+            </div>
+          </mat-menu>
+        </mat-list-item>
+      </mat-list>
+      <mat-action-list fxFlex="calc(100%-281px)" class="dps-main-menus">
+        <div *ngFor="let menue of mainMenuItems$|async as menueList" [class.selected]="menue.selected">
+          <button mat-list-item [routerLink]="menue.routerLink" routerLinkActive="active"
+            (click)="onMenueItemClick(menue)" [disabled]="menue.disabled">
+            <mat-icon matListIcon [svgIcon]="menue.svgIcon" *ngIf="menue.svgIcon"></mat-icon>
+            <mat-icon matListIcon *ngIf="!menue.svgIcon">{{menue.icon}}</mat-icon>
+            <label matLine [@animateText]="linkText ? 'hide' : 'show'">{{menue.lable}}</label>
+          </button>
+        </div>
+      </mat-action-list>
+      <mat-nav-list>
+        <mat-list-item>
+          <mat-icon matListIcon [svgIcon]="SvgIcons.IconCtrl"></mat-icon>
+          <label matLine [@animateText]="linkText ? 'hide' : 'show'">Shourcuts</label>
+        </mat-list-item>
+        <mat-list-item>
+          <mat-icon matListIcon [svgIcon]="SvgIcons.IconInfo"></mat-icon>
+          <label matLine [@animateText]="linkText ? 'hide' : 'show'">About</label>
+        </mat-list-item>
+        <mat-list-item (click)="onLogout()" class="logout">
+          <mat-icon color="warn" matListIcon [svgIcon]="SvgIcons.IconLogoff"></mat-icon>
+          <label matLine [@animateText]="linkText ? 'hide' : 'show'">Logout</label>
+        </mat-list-item>
+      </mat-nav-list>
+    </div>
+  </mat-drawer>
+  <mat-drawer-content [@onMainContentChange]="isSmallSideNav ? 'close': 'open'">
+    <router-outlet></router-outlet>
+  </mat-drawer-content>
+</mat-drawer-container>

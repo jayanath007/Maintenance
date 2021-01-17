@@ -1,0 +1,75 @@
+@import '~src/call-log-colors.scss';
+
+.dps-auth-layout {
+  height: 100%;
+  width: 100%;
+  font-family: "Lato", sans-serif;
+
+  .mid-content {
+    width: 100%;
+    text-align: center;
+  }
+
+  h1 {
+    font-size: 40px;
+  }
+
+  .dps-auth-content {
+    padding: 10px 5%;
+    background-color: $dps-mat-blue-2;
+    overflow: auto;
+
+    h1 {
+      color: $dps-mat-white;
+      margin-bottom: 50px;
+    }
+
+    h1.dps-title {
+      text-align: center;
+
+      span {
+        display: block;
+        font-size: 20px;
+        height: 64px;
+        font-weight: 400;
+      }
+    }
+
+    ::ng-deep {
+
+      input:-webkit-autofill,
+      input:-webkit-autofill:hover,
+      input:-webkit-autofill:focus,
+      input:-webkit-autofill:active {
+        box-shadow: 0 0 0 30px $dps-mat-blue-2 inset !important;
+      }
+
+      input:-webkit-autofill {
+        -webkit-text-fill-color: $dps-mat-white !important;
+      }
+
+      input {
+        caret-color: $dps-mat-white;
+      }
+    }
+  }
+
+  .dps-theme-img {
+    img {
+      width: 50%;
+    }
+
+    h1 {
+      color: $dps-mat-blue-2;
+      text-align: center;
+
+      span {
+        display: block;
+        font-size: 20px;
+        color: $dps-mat-blue-1;
+        height: 64px;
+        font-weight: 400;
+      }
+    }
+  }
+}

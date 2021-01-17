@@ -1,0 +1,27 @@
+<dps-auth-layout>
+  <form fxLayout="column" class="dps-login-content" [formGroup]="loginForm" (ngSubmit)="onLoginBtnClick()">
+    <h1>LOGIN
+      <mat-error *ngIf="!loading">{{errorText}}</mat-error>
+      <mat-progress-bar mode="indeterminate" *ngIf="loading" color="warn"></mat-progress-bar>
+    </h1>
+    <mat-form-field floatLabel="always" class="dps-name-input">
+      <mat-label>NAME</mat-label>
+      <input matInput placeholder="Enter your login name here" formControlName="username" [readOnly]="loading">
+      <mat-error *ngIf="submitted && loginData.username.errors?.required">Login name is required</mat-error>
+    </mat-form-field>
+    <mat-form-field floatLabel="always">
+      <mat-label>PASSWORD</mat-label>
+      <input matInput placeholder="" [type]="hidePassword ? 'password' : 'text'" formControlName="password"
+        [readOnly]="loading">
+      <button mat-icon-button matSuffix *ngIf="loginData.password.value" (mousedown)="hidePassword = false" (mouseup)="hidePassword = true" type="button"
+        [attr.aria-label]="'hidePassword password'" [attr.aria-pressed]="hidePassword">
+        <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
+      <mat-error *ngIf="submitted && loginData.password.errors?.required">Password is required</mat-error>
+    </mat-form-field>
+    <div class="dps-reset-password"><span (click)="onForgotPasswordClick()">Forgot password?</span></div>
+    <div class="dps-loging-btn">
+      <button mat-flat-button [disabled]="loading" type="submit"> Login </button>
+    </div>
+  </form>
+</dps-auth-layout>

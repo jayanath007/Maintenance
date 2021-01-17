@@ -1,0 +1,23 @@
+<mat-card class="mat-datepicker-content mat-elevation-z">
+  <div fxLayout="row">
+    <mat-calendar #fromCalendar [selected]="_fromDate" (selectedChange)="_fromDate=$event">
+    </mat-calendar>
+    <mat-calendar #toCalendar [selected]="_toDate" (selectedChange)="_toDate=$event">
+    </mat-calendar>
+  </div>
+  <div fxLayout="row">
+    <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50">
+      <button mat-button (click)="_fromDate=dateNow;onRefreshMatCalendar(fromCalendar)">Today</button>
+      <button mat-button (click)="_fromDate=null" color="warn">Clear</button>
+    </div>
+    <div fxLayout="row" fxLayoutAlign="space-between center" fxFlex="50">
+      <button mat-button (click)="_toDate=dateNow;onRefreshMatCalendar(toCalendar)">Today</button>
+      <button mat-button (click)="_toDate=null" color="warn">Clear</button>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div fxLayout="row">
+    <button mat-button (click)="onOkClick()" color="primary" fxFlex="50">Ok</button>
+    <button mat-button (click)="onCancelClick()" color="accent" fxFlex="50">Cancel</button>
+  </div>
+</mat-card>

@@ -1,0 +1,153 @@
+@import '~src/call-log-colors.scss';
+
+
+mat-drawer-container.dps-main-layout {
+  height: 100%;
+
+  .dps-main-menu {
+    height: 100%;
+    background-color: $dps-mat-blue-2;
+
+    .dps-main-menus {
+      overflow-y: auto;
+    }
+
+    .dps-user-profile {
+      .dps-welcome-tag {
+        color: $dps-mat-orange;
+        font-size: 11px !important;
+      }
+
+      .dps-welcome-name {
+        font-size: 20px !important;
+        font-weight: 100 !important;
+      }
+
+      mat-divider {
+        background-color: $dps-mat-blue-1;
+        margin: 0px 16px;
+      }
+    }
+  }
+
+  .user-init {
+    font-family: "Lato", sans-serif;
+    font-size: 15px;
+    border: 2px solid $dps-mat-orange;
+    color: $dps-mat-orange;
+    display: flex;
+    place-content: center;
+    align-items: center;
+    padding: 5px;
+    width: 24px;
+    height: 24px;
+  }
+
+
+  ::ng-deep {
+    .mat-drawer-backdrop {
+      background-color: unset;
+    }
+  }
+
+  .dps-small-menu-btn {
+    position: fixed;
+    top: 28px;
+    left: 55px;
+    z-index: 1;
+    background-color: black;
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+
+    mat-icon {
+      font-size: 20px;
+    }
+  }
+
+  [matLine],
+  mat-icon {
+    color: $dps-mat-blue-1;
+  }
+
+  .dps-welcome-tag {
+    color: $dps-mat-orange;
+    font-size: 11px !important;
+  }
+
+  .dps-welcome-name {
+    font-size: 20px !important;
+    font-weight: 100 !important;
+
+  }
+}
+
+mat-nav-list .mat-list-item.logout {
+  .mat-icon {
+    border-color: $dps-mat-orange !important;
+    color: $dps-mat-orange !important;
+  }
+
+  .mat-line {
+    color: $dps-mat-orange;
+  }
+}
+
+mat-action-list,
+mat-nav-list {
+  .mat-list-item .mat-icon {
+    border: 2px solid $dps-mat-blue-1;
+    width: 22px;
+    height: 22px;
+    font-size: 20px;
+    padding: 6px;
+  }
+
+  .mat-list-item:hover:not([disabled]) .mat-icon {
+    border-color: $dps-mat-green;
+    color: $dps-mat-green;
+  }
+
+  .mat-list-item[disabled] {
+    background: none;
+
+    .mat-icon {
+      opacity: 0.2;
+    }
+
+    .mat-line {
+      opacity: 0.2 !important;
+    }
+  }
+
+  .selected {
+    .mat-icon {
+      border-color: $dps-mat-green;
+      color: $dps-mat-green;
+    }
+
+    .mat-line {
+      color: $dps-mat-green;
+    }
+  }
+}
+
+::ng-deep.mat-menu-panel.dps-domain-list-menue {
+  max-height: 600px;
+  width: 250px;
+  min-height: 120px;
+  max-width: 250px;
+
+  .mat-menu-content {
+    padding: 0px;
+  }
+
+  mat-form-field {
+    width: 235px;
+    height: 48px;
+    position: absolute;
+    padding: 0 5px;
+    z-index: 2;
+    background-color: $dps-mat-white;
+  }
+}

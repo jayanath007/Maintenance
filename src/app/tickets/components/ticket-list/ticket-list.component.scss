@@ -1,0 +1,124 @@
+@import '~src/call-log-colors.scss';
+
+.dps-ticket-list-layout {
+  height: 100%;
+  width: 100%;
+
+  .dps-ticket-list-content {
+    overflow: auto;
+    width: 100%;
+    position: relative;
+
+    .dps-tickets-empty {
+      position: absolute;
+      height: 100%;
+      width: 100%;
+      z-index: -1;
+
+      img {
+        height: 300px;
+      }
+    }
+
+    [mat-table] {
+      width: 100%;
+      min-width: 1400px;
+
+      [mat-row] {
+        cursor: pointer;
+      }
+
+
+      [mat-row]:hover {
+        opacity: 0.8;
+
+        &:nth-child(even):not(.dps-selected-ticket) {
+          background: $dps-mat-blue-0
+        }
+      }
+
+
+      [mat-row]:nth-child(odd) {
+        background: $dps-mat-blue-0
+      }
+
+      [mat-row].dps-selected-ticket {
+        background: $dps-mat-blue-3;
+        transition: .2s linear all;
+
+        * {
+          color: $dps-mat-white;
+        }
+      }
+
+      [mat-header-row] {
+        background: $dps-mat-blue-gray;
+      }
+
+      td,
+      th {
+        &:not(:last-of-type) {
+          padding-right: 10px;
+        }
+
+        &:not(:first-of-type) {
+          padding-left: 10px;
+        }
+      }
+
+      .dps-text-center {
+        text-align: center;
+      }
+    }
+  }
+
+  mat-toolbar {
+    background: $dps-mat-white;
+
+    .dps-refresh-grid {
+      background: $dps-mat-bright-green;
+      color: $dps-mat-white;
+      margin-left: 10px;
+    }
+
+    mat-form-field {
+      margin-left: 10px;
+      font-size: 16px;
+    }
+
+    .dps-search-grid {
+      background: $dps-mat-blue-3;
+      color: $dps-mat-white;
+    }
+
+    .dps-pie-chart {
+      background: $dps-mat-orange;
+      color: $dps-mat-white;
+      margin-left: 10px;
+    }
+
+    .dps-departments-btn {
+      color: $dps-mat-blue-3;
+    }
+
+    mat-chip-list {
+      &:first-child {
+        margin-right: 8px;
+      }
+
+      mat-chip[dpsDateRangePicker] {
+        color: $dps-mat-white;
+        background-color: $dps-mat-blue-5;
+
+        mat-icon {
+          color: $dps-mat-white !important;
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  mat-paginator {
+    background: $dps-mat-blue-gray;
+  }
+}

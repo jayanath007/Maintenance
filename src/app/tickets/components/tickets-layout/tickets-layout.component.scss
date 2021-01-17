@@ -1,0 +1,12 @@
+mat-drawer-container {
+  height: 100%;
+
+
+  mat-drawer {
+    width: 600px;
+
+    &.dps-chart-side-nav {
+      width: 400px;
+    }
+  }
+}

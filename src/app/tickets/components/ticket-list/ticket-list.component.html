@@ -1,0 +1,115 @@
+<div class="dps-ticket-list-layout" fxLayout="column" *dpsLet="filters$ | async as filters">
+  <mat-toolbar id="dps-ticket-list-toolbar">
+    <mat-toolbar-row>
+      <button mat-button [matMenuTriggerFor]="menu" *dpsLet="departments$ | async as departments"
+        class="dps-departments-btn">
+        <span>{{getSelectedDepartment(filters.departmentId,departments)|uppercase}}</span>
+        <mat-icon>keyboard_arrow_down</mat-icon>
+        <mat-menu #menu="matMenu" xPosition="before">
+          <button mat-menu-item *ngFor="let department of departments"
+            (click)="onDepartmentChange(department,filters.departmentId)">{{department.name}}</button>
+          <button mat-menu-item
+            (click)="onDepartmentChange(defaultDepartment,filters.departmentId)">{{defaultDepartment.name}}</button>
+        </mat-menu>
+      </button>
+      <span fxFlex="1 1 auto"></span>
+      <div fxLayout="row" *ngIf="!showSecondToolbar" fxLayoutAlign=" center">
+        <ng-content *ngTemplateOutlet="secondToolbar">
+        </ng-content>
+      </div>
+      <mat-form-field [@onSearchInputToggl]="(filters.searchText)||showSearchInput?'show':'hide'">
+        <input matInput #searchInput [ngModel]="filters.searchText"
+          (blur)="onSearchInputBlur(searchInput,filters.searchText)" (keyup.enter)="onSearch(searchInput)">
+        <button mat-icon-button matSuffix (click)="searchInput.value=''">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+      <button mat-icon-button (click)="onSearchClick(searchInput)" class="dps-search-grid medium">
+        <mat-icon>search</mat-icon>
+      </button>
+      <button mat-icon-button class="dps-refresh-grid medium" (click)="onRefresh()">
+        <mat-icon>refresh</mat-icon>
+      </button>
+      <button mat-icon-button class="dps-pie-chart medium" (click)="onShowChartChange(true)"
+        [fxHide]="filters.statusOfTicket===TicketStatus.Open || (showChart$|async)">
+        <mat-icon [svgIcon]="SvgIcons.IconPieChart"></mat-icon>
+      </button>
+    </mat-toolbar-row>
+    <mat-toolbar-row *ngIf="showSecondToolbar">
+      <ng-content *ngTemplateOutlet="secondToolbar">
+      </ng-content>
+    </mat-toolbar-row>
+    <ng-template #secondToolbar>
+      <mat-chip-list>
+        <mat-chip [value]="TicketStatus.Open" [selected]="filters.statusOfTicket===TicketStatus.Open"
+          (click)="onStatusChange(TicketStatus.Open,filters.statusOfTicket)">Open</mat-chip>
+        <mat-chip [value]="TicketStatus.Closed" [selected]="filters.statusOfTicket===TicketStatus.Closed"
+          (click)="onStatusChange(TicketStatus.Closed,filters.statusOfTicket)">Closed
+        </mat-chip>
+      </mat-chip-list>
+      <span fxFlex="1 1 auto"></span>
+      <mat-chip-list>
+        <mat-chip [selected]="false" [selectable]="false" [removable]="false" dpsDateRangePicker
+          [fromDate]="filters.startDate" [toDate]="filters.endDate" (datesChange)="onDateRangeChange($event)">
+          <span *ngIf="filters.startDate && filters.endDate">{{filters.startDate | date:'dd/MM/yy'}} -
+            {{filters.endDate | date:'dd/MM/yy'}}</span>
+          <span *ngIf="filters.startDate && !filters.endDate">From {{filters.startDate | date:'dd/MM/yy'}}</span>
+          <span *ngIf="!filters.startDate && filters.endDate">To {{filters.endDate | date:'dd/MM/yy'}}</span>
+          <span *ngIf="!filters.startDate && !filters.endDate">All</span>
+          <mat-icon color="primary" class="notranslate mat-chip-remove mat-chip-trailing-icon">date_range
+          </mat-icon>
+        </mat-chip>
+      </mat-chip-list>
+    </ng-template>
+  </mat-toolbar>
+  <mat-progress-bar mode="indeterminate" *ngIf="loading$|async" color="warn"></mat-progress-bar>
+  <div [fxFlex]="showSecondToolbar?'calc(100%-188px)':'calc(100%-124px)'" class="dps-ticket-list-content">
+    <div class="dps-tickets-empty" fxLayout="row" fxLayoutAlign="center center"
+      *ngIf="(ticketList$|async)?.length<1 && !(loading$|async)">
+      <img src="../../assets/svg/theme-icon-single-color.svg" />
+    </div>
+    <table mat-table [dataSource]="ticketList$|async">
+
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let element" width="100"> {{element.id}} </td>
+      </ng-container>
+      <ng-container matColumnDef="raisedBy">
+        <th mat-header-cell *matHeaderCellDef>RAISED BY</th>
+        <td mat-cell *matCellDef="let element" [title]="element.contactEmailAddress" width="200">
+          {{element.raisedBy}}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="dateCreated">
+        <th mat-header-cell *matHeaderCellDef>REPORTED</th>
+        <td mat-cell *matCellDef="let element" width="140"> {{element.dateCreated|date:'dd/MM/yy hh:mm a'}} </td>
+      </ng-container>
+      <ng-container matColumnDef="dateClosed">
+        <th mat-header-cell *matHeaderCellDef>CLOSED</th>
+        <td mat-cell *matCellDef="let element" width="140"> {{element.dateClosed|date:'dd/MM/yy hh:mm a'}} </td>
+      </ng-container>
+      <ng-container matColumnDef="duration">
+        <th mat-header-cell *matHeaderCellDef class="dps-text-center">DURATION</th>
+        <td mat-cell *matCellDef="let element" class="dps-text-center" width="70"> {{element.duration}} </td>
+      </ng-container>
+      <ng-container matColumnDef="agentCode">
+        <th mat-header-cell *matHeaderCellDef>ENGINEER</th>
+        <td mat-cell *matCellDef="let element" [title]="element.agentName" width="70"> {{element.agentCode}} </td>
+      </ng-container>
+      <ng-container matColumnDef="summary">
+        <th mat-header-cell *matHeaderCellDef>SUMMARY</th>
+        <td mat-cell *matCellDef="let element" [title]="element.summary"> {{element.summary| slice:0:400}}
+          {{element.text && (element.summary.length>401)?'...':''}} </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="filters.statusOfTicket===TicketStatus.Open?openColumns:closedColumns">
+      </tr>
+      <tr mat-row *matRowDef="let row; columns: filters.statusOfTicket===TicketStatus.Open?openColumns:closedColumns;"
+        (click)="onTicketClick(row)" [ngClass]="{'dps-selected-ticket': (selectedTicket$|async)?.id===row.id}">
+      </tr>
+    </table>
+  </div>
+  <mat-paginator [length]="paginator.length" [pageSize]="paginator.pageSize"
+    [pageSizeOptions]="paginator.pageSizeOptions" [pageIndex]="paginator.pageIndex" [showFirstLastButtons]="true"
+    *ngIf="paginator$ | async as paginator" (page)="onPageChange($event,paginator)">
+  </mat-paginator>
+</div>

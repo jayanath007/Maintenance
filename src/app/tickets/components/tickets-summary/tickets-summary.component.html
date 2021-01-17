@@ -1,0 +1,51 @@
+<div class="dps-tickets-summary" fxLayout="column">
+  <mat-toolbar>
+    <span fxFlex="1 1 auto" class="dps-text-line">TOP CALLERS‎</span>
+    <button mat-icon-button (click)="onViewClose()">
+      <mat-icon class="open-close-arrow" matListIcon [svgIcon]="SvgIcons.IconArrowright"></mat-icon>
+    </button>
+  </mat-toolbar>
+  <mat-progress-bar mode="indeterminate" *ngIf="loading$|async" color="warn"></mat-progress-bar>
+  <div class="dps-tickets-summary-view" fxFlex="calc(100%-69px)" *ngIf="_showCharts" fxLayout="column">
+    <img src="../../assets/svg/empty-chart.svg" *ngIf="topCallers?.length<1" />
+    <ngx-charts-advanced-pie-chart class="dps-top-callers-chart‎" [view]="[1305, 400]" [scheme]="colorScheme"
+      [results]="topCallers" label="Total Calls">
+    </ngx-charts-advanced-pie-chart>
+    <mat-divider></mat-divider>
+    <div class="advanced-pie-legend dps-durations" *dpsLet="durations$ | async as durations">
+      <div class="total-label">
+        Duration to Solve
+      </div>
+      <div class="legend-items-container">
+        <div class="legend-items">
+          <div class="legend-item">
+            <div class="item-color" [style.border-left-color]="'#A10A28'"></div>
+            <div class="item-value">
+              {{ durations.firstFiftyAvg }}
+            </div>
+            <div class="item-label">First</div>
+            <div class="item-percent" ngx-charts-count-up [countTo]="50" [countSuffix]="'%'"></div>
+          </div>
+
+          <div class="legend-item">
+            <div class="item-color" [style.border-left-color]="'#C7B42C'"></div>
+            <div class="item-value">
+              {{ durations.nextTwentyFiveAvg }}
+            </div>
+            <div class="item-label">Next</div>
+            <div class="item-percent" ngx-charts-count-up [countTo]="25" [countSuffix]="'%'"></div>
+          </div>
+
+          <div class="legend-item">
+            <div class="item-color" [style.border-left-color]="'#5AA454'"></div>
+            <div class="item-value">
+              {{ durations.lastTwentyFiveAvg }}
+            </div>
+            <div class="item-label">Last</div>
+            <div class="item-percent" ngx-charts-count-up [countTo]="25" [countSuffix]="'%'"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

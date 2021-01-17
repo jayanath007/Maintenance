@@ -1,0 +1,51 @@
+.dps-tickets-summary {
+  height: 100%;
+  width: 100%;
+
+  .dps-tickets-summary-view {
+    overflow-y: auto;
+    font-family: Lato;
+    position: relative;
+
+    img {
+      position: absolute;
+      height: 348px;
+      top: 26px;
+      width: 100%;
+    }
+
+    ngx-charts-advanced-pie-chart.dps-top-callers-chart‎ {
+      padding-bottom: 30px;
+
+      ::ng-deep {
+        div:not([class]) {
+          display: flex;
+          flex-direction: column;
+          width: 100% !important;
+          height: 512px !important;
+
+          .ngx-charts-outer,
+          svg.ngx-charts {
+            width: 100% !important;
+            height: 360px !important;
+          }
+        }
+
+        .advanced-pie-legend-wrapper {
+          width: calc(100% - 20px) !important;
+          padding: 0 10px;
+
+          .advanced-pie-legend {
+            width: calc(100% - 20px) !important;
+          }
+        }
+      }
+    }
+
+    .advanced-pie-legend.dps-durations {
+      padding: 30px 10px;
+      top: unset;
+      transform: none;
+    }
+  }
+}
